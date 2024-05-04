@@ -1,3 +1,4 @@
+use cosmwasm_std::Coin;
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Clone,  Debug, PartialEq, Eq)]
@@ -21,12 +22,17 @@ pub struct IncrementResp {
 
 #[derive(Serialize, Deserialize, Clone,  Debug, PartialEq, Eq)]
 pub struct InstantiateMsg {
-    pub counter: u8
+    pub counter: u8,
+    pub minimal_donation: Coin,
 }
 
 #[derive(Serialize, Deserialize, Clone,  Debug, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum ExecMsg{
     Poke{},
-    Reset{ counter: u8},
+    Donate{},
+    Reset{
+        #[serde(default)]
+        counter: u8,
+    },
 }
