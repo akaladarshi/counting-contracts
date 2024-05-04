@@ -23,3 +23,10 @@ pub struct IncrementResp {
 pub struct InstantiateMsg {
     pub counter: u8
 }
+
+#[derive(Serialize, Deserialize, Clone,  Debug, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ExecMsg{
+    Poke{},
+    Reset{ counter: u8},
+}

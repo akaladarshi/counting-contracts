@@ -1,6 +1,7 @@
-use cosmwasm_std::{DepsMut, Deps, Env, MessageInfo, Empty, Response, StdResult, entry_point, QueryResponse, to_json_binary};
-use crate::contract::query;
-use crate::msg::{InstantiateMsg, QueryMsg};
+use cosmwasm_std::{DepsMut, Deps, Env, MessageInfo, Response, StdResult, entry_point, QueryResponse, to_json_binary};
+use log::info;
+use crate::contract::{exec, query};
+use crate::msg::{ExecMsg, InstantiateMsg, QueryMsg};
 
 pub mod msg;
 mod contract;
@@ -19,12 +20,15 @@ pub fn instantiate(
 
 #[entry_point]
 pub fn execute(
-    _deps: DepsMut,
+    deps: DepsMut,
     _env: Env,
-    _info: MessageInfo,
-    _msg: Empty,
+    info: MessageInfo,
+    msg: ExecMsg,
 ) -> StdResult<Response> {
-    Ok(Response::new())
+    match msg {
+        ExecMsg::Poke {} => exec::poke(deps, info),
+        ExecMsg::Reset { counter: val} => exec::reset(deps, val)
+    }
 }
 
 #[entry_point]

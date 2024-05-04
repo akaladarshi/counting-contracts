@@ -22,3 +22,28 @@ pub mod query {
     }
 }
 
+pub mod exec {
+    use cosmwasm_std::{DepsMut, MessageInfo, Response, StdResult};
+    use crate::state::COUNTER;
+
+    pub fn poke(deps: DepsMut, info: MessageInfo) -> StdResult<Response>{
+        let mut counter = COUNTER.load(deps.storage)?;
+        counter += 1;
+
+        COUNTER.save(deps.storage, &counter)?;
+
+        let res = Response::new()
+            .add_attribute("action", "poke")
+            .add_attribute("sender", info.sender)
+            .add_attribute("counter", counter.to_string());
+
+        Ok(res)
+    }
+
+    pub fn reset(deps: DepsMut, val: u8) -> StdResult<Response> {
+        COUNTER.update(deps.storage, |_| -> StdResult<_> {
+            Ok(val)
+        })?;
+        Ok(Response::new())
+    }
+}
