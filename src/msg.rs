@@ -10,11 +10,16 @@ pub enum QueryMsg {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")] // this not required but writing for consistency
 pub struct ValueResp {
-    pub value: u64,
+    pub value: u8,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub struct IncrementResp {
     pub value: u8
+}
+
+#[derive(Serialize, Deserialize, Clone,  Debug, PartialEq, Eq)]
+pub struct InstantiateMsg {
+    pub counter: u8
 }

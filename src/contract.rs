@@ -1,8 +1,19 @@
-pub mod query {
-    use crate::msg::{IncrementResp, ValueResp};
+use cosmwasm_std::{DepsMut, Response, StdResult};
+use crate::state::COUNTER;
 
-    pub fn value() -> ValueResp {
-        ValueResp { value: 0 }
+pub fn initialise(deps: DepsMut, counter: u8) -> StdResult<Response>{
+    COUNTER.save(deps.storage, &counter)?;
+    Ok(Response::new())
+}
+
+pub mod query {
+    use cosmwasm_std::{Deps, StdResult};
+    use crate::msg::{IncrementResp, ValueResp};
+    use crate::state::COUNTER;
+
+    pub fn value(deps: Deps) -> StdResult<ValueResp> {
+        let value = COUNTER.load(deps.storage)?;
+        Ok(ValueResp { value })
     }
 
     pub fn increment(mut i: u8) -> IncrementResp {
@@ -10,3 +21,4 @@ pub mod query {
        IncrementResp { value: i }
     }
 }
+
