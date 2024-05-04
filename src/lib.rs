@@ -1,4 +1,10 @@
-use cosmwasm_std::{DepsMut, Deps, Env, MessageInfo, Empty, Response, StdResult, entry_point, QueryResponse};
+use cosmwasm_std::{DepsMut, Deps, Env, MessageInfo, Empty, Response, StdResult, entry_point, QueryResponse, to_json_binary};
+use crate::contract::query;
+use crate::msg::QueryMsg;
+
+pub mod msg;
+mod contract;
+mod test;
 
 #[entry_point]
 pub fn instantiate(
@@ -24,7 +30,10 @@ pub fn execute(
 pub fn query(
     _deps: Deps,
     _env: Env,
-    _msg: Empty,
+    msg: QueryMsg,
 ) -> StdResult<QueryResponse> {
-    Ok(QueryResponse::new(vec![]))
+    match msg {
+        QueryMsg::Value {} => to_json_binary(&query::value()),
+        QueryMsg::Increment {value:val } => to_json_binary(&query::increment(val))
+    }
 }

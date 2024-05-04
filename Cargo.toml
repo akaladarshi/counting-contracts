@@ -9,5 +9,4 @@ crate-type = ["cdylib",  "rlib"]
 
 [dependencies]
 cosmwasm-std = "2.0.2"
-
-
+serde = { version = "1.0.199", features = ["derive"] }
